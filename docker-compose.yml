@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  web_server:
+    user: "root"
+    image: tomcat
+    ports:
+      - "80:80"
+    volumes:
+      - "./var/www/html:/usr/local/apache2/htdocs"
