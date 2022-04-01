@@ -2,7 +2,7 @@ version: "3.8"
 services:
   web_server:
     user: "root"
-    image: tomcat
+    image: tomcat:latest
     ports:
       - "80:80"
     volumes:
