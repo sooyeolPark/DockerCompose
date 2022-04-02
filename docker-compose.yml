@@ -1,9 +1,18 @@
 version: "3.8"
 services:
-  web_server:
+  proxy:
+    user: "root"
+    image : nginx:latest
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: always
+  was:
+    depends_on:
+      - proxy
     user: "root"
     image: tomcat:latest
-    ports:
+    expose:
       - "80:80"
     volumes:
-      - "./var/www/html:/usr/local/apache2/htdocs"
+      - "./tomcat/var/www/html:/usr/local/apache2/htdocs"

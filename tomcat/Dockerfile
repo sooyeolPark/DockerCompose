@@ -6,11 +6,11 @@ MAINTAINER sooyeolPark
 ENTRYPOINT export TZ=Asia/Seoul
 
 # ADD tomcat/catalina.sh $CATALINA_HOME/bin/
-ADD tomcat/run.sh $CATALINA_HOME/bin/run.sh
-RUN chmod +x $CATALINA_HOME/bin/run.sh
+#ADD tomcat/run.sh $CATALINA_HOME/bin/run.sh
+#RUN chmod +x $CATALINA_HOME/bin/run.sh
 
 # add MySQL JDBC driver jar
-ADD tomcat/mysql-connector-java-5.1.36-bin.jar $CATALINA_HOME/lib/
+#ADD tomcat/mysql-connector-java-5.1.36-bin.jar $CATALINA_HOME/lib/
 
 # create mount point for volume with application
 # RUN mkdir $CATALINA_HOME/webapps/UserSignup
@@ -21,5 +21,5 @@ ENV JPDA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=
 #ENV JPDA_TRANSPORT="dt_socket"
 
 # start tomcat7 with remote debugging
-EXPOSE 8080
-CMD ["run.sh"]
+#EXPOSE 8080
+#CMD ["run.sh"]
