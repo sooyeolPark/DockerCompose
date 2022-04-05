@@ -26,4 +26,13 @@
        1. CMD는 docker run 실행 시, 추가적인 명령어에 따라 설정한 명령어를 수정하고자 할 때 사용된다.
        2. ENTRYPOINT는 docker run 실행 시, 추가적인 명령어의 존재 여부와 상관 없이 무조건 실행되는 명령이다.
 
+구조
+1. proxy (nginx)
+   1. nignx를 이용하여 reverse proxy로 이용
+   2. 모든 접근이 이 컨테이너로 들어오며 들어온 request를 분류하여 내부 컨테이너로 중계한다.
+   3. 80:80로 로컬 포트와 container port를 연결한다. 
+   4. nginx.conf파일을 수정하여 server_name/tomcat 으로 들어오면 docker의 tomcat컨테이너의 8080포트로 연결한다.
+
+2. tomcat
+   1. docker-compose.yml파일에 expose로 8080포트르 열어놓아 proxy서버에서 접근할 수 있게 만든다.
 
