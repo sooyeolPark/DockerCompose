@@ -3,7 +3,9 @@ FROM tomcat:latest
 MAINTAINER sooyeolPark
 
 # timezone set
-ENTRYPOINT export TZ=Asia/Seoul
+RUN apt-get install -y supervisor
+
+ENTRYPOINT ["export", "TZ=Asia/Seoul"]
 
 #docker exec dockercompose-proxy-1 tar Ccf /etc/nginx/ - . | tar Cxf d/etc
 # ADD tomcat/catalina.sh $CATALINA_HOME/bin/

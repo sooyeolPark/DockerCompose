@@ -12,26 +12,24 @@ services:
   tomcat:
     container_name: "tomcat"
     image: tomcat:latest
-    build:
-      context: ./tomcat
-      dockerfile: Dockerfile
+#    build:
+#      context: ./tomcat
+#      dockerfile: Dockerfile
     depends_on:
       - proxy
     user: "root"
     expose:
       - "8080"
+    restart: always
+    tty: true
   node:
     container_name: "node"
     image: node:latest
     build:
-      context: ./node
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: node/Dockerfile
     depends_on:
       - proxy
-    volumes:
-          - "./node/package.json:/home/node/package.json"
-          - "./node/index.js:/home/node/index.js"
-          - "./node/node_modules:/home/node/node_modules"
     environment:
       - NODE_ENV=development
     expose:

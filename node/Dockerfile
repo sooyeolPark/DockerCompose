@@ -3,9 +3,12 @@ FROM node:latest
 MAINTAINER sooyeolPark
 
 # timezone set
-ENTRYPOINT export TZ=Asia/Seoul
-WORKDIR /home/node/
-ENTRYPOINT npm start
+ENV TZ Asia/Seoul
+WORKDIR /home/
+COPY ../node ./node
+WORKDIR /home/node
+RUN npm install && npm update
+ENTRYPOINT ["/home/node/nodeStart.sh"]
 #docker exec dockercompose-proxy-1 tar Ccf /etc/nginx/ - . | tar Cxf d/etc
 # ADD tomcat/catalina.sh $CATALINA_HOME/bin/
 #ADD tomcat/run.sh $CATALINA_HOME/bin/run.sh
