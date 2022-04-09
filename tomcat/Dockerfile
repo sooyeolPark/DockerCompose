@@ -3,9 +3,12 @@ FROM tomcat:latest
 MAINTAINER sooyeolPark
 
 # timezone set
-RUN apt-get install -y supervisor
-
-ENTRYPOINT ["export", "TZ=Asia/Seoul"]
+RUN apt-get update && apt-get install -y supervisor
+COPY supervisord.conf /etc/supervisord.conf
+COPY tomcatStart.sh ./
+#ENTRYPOINT ["supervisord","-c","/etc/supervisord.conf"]
+#ENTRYPOINT ["sh","/usr/local/tomcat/bin/startup.sh"]
+ENTRYPOINT ["sh", "tomcatStart.sh"]
 
 #docker exec dockercompose-proxy-1 tar Ccf /etc/nginx/ - . | tar Cxf d/etc
 # ADD tomcat/catalina.sh $CATALINA_HOME/bin/
@@ -19,7 +22,7 @@ ENTRYPOINT ["export", "TZ=Asia/Seoul"]
 # RUN mkdir $CATALINA_HOME/webapps/UserSignup
 
 # add tomcat jpda debugging environmental variables
-ENV JPDA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
+#ENV JPDA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
 #ENV JPDA_ADDRESS="8000"
 #ENV JPDA_TRANSPORT="dt_socket"
 

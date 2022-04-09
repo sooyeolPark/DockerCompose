@@ -12,9 +12,9 @@ services:
   tomcat:
     container_name: "tomcat"
     image: tomcat:latest
-#    build:
-#      context: ./tomcat
-#      dockerfile: Dockerfile
+    build:
+      context: ./tomcat
+      dockerfile: Dockerfile
     depends_on:
       - proxy
     user: "root"
