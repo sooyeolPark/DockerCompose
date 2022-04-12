@@ -32,9 +32,15 @@
    2. 모든 접근이 이 컨테이너로 들어오며 들어온 request를 분류하여 내부 컨테이너로 중계한다.
    3. 80:80로 로컬 포트와 container port를 연결한다. 
    4. nginx.conf파일을 수정하여 server_name/tomcat 으로 들어오면 docker의 tomcat컨테이너의 8080포트로 연결한다.
+   5. server_name/node로 들어오면 docker의 node컨테이너로 연결한다.
+   6. server_name/컨테이너명으로하면 해당 컨테이너의 index로 들어온다고 생각했으나 해당 컨테이너 주소의 /컨테이너명으로 들어가게됨
+      1. 위 문제는 나중에 해결해야할 듯
 
 2. tomcat
    1. docker-compose.yml파일에 expose로 8080포트르 열어놓아 proxy서버에서 접근할 수 있게 만든다.
+   2. 컨테이너가 실행되고 바로 닫히는 exited with code 0 문제가 발생함
+      1. docker 컨테이너는 기본적으로 하나의 작업으 완료하면 자동으로 종료하게 되어있음
+      2. 위 문제를 해결하기 위하여 종료되지 않는 프로세스를 만들어야하는데 supervisor를 깔고 실행시킴으로써 문제를 해결함
 
 3. node
    1. node.js로 서버 구성
