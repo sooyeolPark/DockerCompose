@@ -8,6 +8,7 @@ WORKDIR /home/
 COPY ../node ./node
 WORKDIR /home/node
 RUN npm install && npm update
+RUN npm install express mysql
 ENTRYPOINT ["/home/node/nodeStart.sh"]
 #docker exec dockercompose-proxy-1 tar Ccf /etc/nginx/ - . | tar Cxf d/etc
 # ADD tomcat/catalina.sh $CATALINA_HOME/bin/

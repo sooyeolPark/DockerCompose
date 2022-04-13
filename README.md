@@ -48,6 +48,14 @@
       1. docker-compose.yml의 volume에 node_modules를 연결시키고 Dockerfile에서 npm start했을때 package.json을 찾지 못하면서 npm start error
       2. dockerfile이 수행되면 모든 작업을 숨기고 현재 디렉터리로 바꾸는데 이때 pacakge.json이 없다 (이건 compose.yml파일에 넣어줬기 때문)
       3. volume부분 코드 삭제 후 dockerfile에서 모두 처리하게 수정
+   3. node_modules 폴더를 매번 카피하기 너무 무거워서 .gitignore생성하여 카피하지 않음
+   4. mysql container와 연결 테스트 
+      1. npm install express mysql Dockerfile에 추가함
+      2. 테스트 코드 작성했으나 mysql 접속시 권한 문제 발생
+         1.ALTER USER 'root'@'node' IDENTIFIED WITH mysql_native_password BY 'psy1234' 
+         2. FLUSH PRIVILEGES
+         3. 위 명령어 실행해야하지만 node부분에 ip를 적어주어야하는 문제 발생
+         4. docker-compose의 network 설정을 통해 시도해기로....
 
 4. mysql
    1. mysql contianer로 연결하여 필요한 컨테이너에서 이용하게 하려고 함
