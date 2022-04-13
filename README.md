@@ -49,6 +49,11 @@
       2. dockerfile이 수행되면 모든 작업을 숨기고 현재 디렉터리로 바꾸는데 이때 pacakge.json이 없다 (이건 compose.yml파일에 넣어줬기 때문)
       3. volume부분 코드 삭제 후 dockerfile에서 모두 처리하게 수정
 
+4. mysql
+   1. mysql contianer로 연결하여 필요한 컨테이너에서 이용하게 하려고 함
+   2. docker가 재부팅시에도 계속 쓸수 잇는 DB 만들기
+      1. docker-compose의 volumes 설정으로 container안의 변경 사항이 local에 저장되어 재부팅시에도 data가 유지될 수 있도록 만든다.
+
 ** 유의사항
 1. docker-compose build나 up 할 시 cache되어 수정한 내용이 반영이 안되거나 수정 코드와 동작 코드가 꼬일 수 있다
    1. docker-compose build --no-cache/ docker-compose up -d / docker-compose down명령어로 개발 단계에서는 수정사항이 즉각 반영되게 해주는게 좋다.
