@@ -68,3 +68,27 @@
 2. [ERROR] docker-compose build를 할때 max depth exceeded 라는 메세지와 함께 빌드 실패
    1. 사용 가능한 최대 레이어의 수는 125개이다. 이를 초과하면서 발생하는 문제인데...
       이때는 사용하던 기본 이미지를 삭제후, 다시 받아와 사용하면 해결된다.
+
+추가)
+특정 이미지를 만들어서 배포하고 싶으면 docker-registry를 사용하면 된다.
+1. DockerHub에 올릴때
+   1. https://hub.docker.com/ 에 접속하여 repository를 만들면 repository이름을 부여받는다.
+   2. 작업환경에서 image를 만들어 빌드할때 부여받은 repository이름으로 빌드한다.
+   3. docker push repository 명령어를 입력하면 자동으로 repository에 image가 등록된다.
+   4. 버전관리는 push 할때 repository:ver 식으로 하면 좋다.
+
+2. Private Registry이용 (특정 서버에 올려놓는다고 가정함)
+   1. 해당 서버에 Docker를 설치한다.
+   2. docker pull registry 를 사용하여 registry 이미지를 다운받아 컨테이너를 가동시킨다.
+      1. 포트를 지정하여 서버로 들어오는 포트를 설정하여 컨테이너로 바인딩 시켜준다.
+      2. Container가 down되면 push해놓은 이미지들이 다 날라가기 때문에 컨테이너 안의 /var/lib/registry/docker/registry/v2 경로를 local에 볼륨을 잡아준다.
+   3. 커스텀한 image를 서버IP:port/imagename:ver 이름으로 빌드한다.
+      1. 예를 들어 registry 컨테이너를 가동시켜준 IP가 111.111.11.111이고
+      2. port binding을 6000번 port를 바인딩하였고
+      3. ELK스택 image를 만들었다면
+      4. image를 빌드할때 111.111.11.111:6000/my-elk:1.0 이런식으로 네이밍하여 빌드한다.
+   4. 빌드된 이미지를 docker push 서버IP:port/imagename:ver 하면 registry 컨테이너로 들어가 해당이미지를 pull받을 수 있게된다.
+      1. docker registry는 https만 지원한다.
+      2. 만약 http만 사용가능하다면 /etc/docker/daemon.json 파일에서 {
+         "insecure-registries":["서버IP:port"]
+         } 를 추가하면 http통신이 가능해진다.
