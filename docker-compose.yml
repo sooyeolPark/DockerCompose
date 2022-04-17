@@ -9,6 +9,9 @@ services:
     restart: always
     volumes:
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      my_net:
+        - ipv4_address: 172.23.0.2
   tomcat:
     container_name: "tomcat"
     image: tomcat:latest
@@ -22,6 +25,9 @@ services:
       - "8080"
     restart: always
     tty: true
+    networks:
+      my_net:
+        - ipv4_address: 172.23.0.3
   node:
     container_name: "node"
     image: node:latest
@@ -35,6 +41,9 @@ services:
     expose:
       - "3000"
     tty: true
+    networks:
+      my_net:
+        - ipv4_address: 172.23.0.4
   mysql:
     container_name: "mysql"
     image: mysql:latest
@@ -45,5 +54,18 @@ services:
     expose:
       - "3306"
     tty: true
+    networks:
+      my_net:
+        - ipv4_address: 172.23.0.5
+  networks:
+    my_net:
+      driver: bridge
+      enable_ipv6: false
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.23.0.0/24
+          - gateway: 172.23.0.1
+
 
 
