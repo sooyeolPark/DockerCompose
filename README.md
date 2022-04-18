@@ -64,7 +64,7 @@
 
 ** 유의사항
 1. docker-compose build나 up 할 시 cache되어 수정한 내용이 반영이 안되거나 수정 코드와 동작 코드가 꼬일 수 있다
-   1. docker-compose build --no-cache/ docker-compose up -d / docker-compose down명령어로 개발 단계에서는 수정사항이 즉각 반영되게 해주는게 좋다.
+   1. docker-compose build --pull --force-rm --no-cache/ docker-compose up -d / docker-compose down명령어로 개발 단계에서는 수정사항이 즉각 반영되게 해주는게 좋다.
 2. [ERROR] docker-compose build를 할때 max depth exceeded 라는 메세지와 함께 빌드 실패
    1. 사용 가능한 최대 레이어의 수는 125개이다. 이를 초과하면서 발생하는 문제인데...
       이때는 사용하던 기본 이미지를 삭제후, 다시 받아와 사용하면 해결된다.
@@ -92,3 +92,6 @@
       2. 만약 http만 사용가능하다면 /etc/docker/daemon.json 파일에서 {
          "insecure-registries":["서버IP:port"]
          } 를 추가하면 http통신이 가능해진다.
+
+이거 해보자
+https://stackoverflow.com/questions/43322033/create-database-on-docker-compose-startup
