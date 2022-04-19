@@ -68,6 +68,12 @@
 2. [ERROR] docker-compose build를 할때 max depth exceeded 라는 메세지와 함께 빌드 실패
    1. 사용 가능한 최대 레이어의 수는 125개이다. 이를 초과하면서 발생하는 문제인데...
       이때는 사용하던 기본 이미지를 삭제후, 다시 받아와 사용하면 해결된다.
+3. docker mysql 이미지 올릴때 docker가 실행되면서 최초로 실행되는 sql문을 /docker-entrypoint-initdb.d에 넣어준다.
+   1. 하지만 volume이 mysql의 data쪽에 잡혀있다면 최초에 실행되고 그 다음에는 실행되지 않는다.
+      1. 정확히 말하면 최초 실행할때는 local의 volume이 비어있는상태에서는 실행됨
+      2. local의 volume에 mysqldata가 있으면 실행되지 않는다.
+      3. 나는 애초에 node에서 접근할 수 있는 권한을 주기위해 alter user ~~ 명령어를 실행하려고 한건데... volume에 상관없이 container를 실행할때마다 실행시키는 법을 찾아봐야겠다.
+
 
 추가)
 특정 이미지를 만들어서 배포하고 싶으면 docker-registry를 사용하면 된다.
@@ -92,6 +98,3 @@
       2. 만약 http만 사용가능하다면 /etc/docker/daemon.json 파일에서 {
          "insecure-registries":["서버IP:port"]
          } 를 추가하면 http통신이 가능해진다.
-
-이거 해보자
-https://stackoverflow.com/questions/43322033/create-database-on-docker-compose-startup
