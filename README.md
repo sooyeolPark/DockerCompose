@@ -52,10 +52,12 @@
    4. mysql container와 연결 테스트 
       1. npm install express mysql Dockerfile에 추가함
       2. 테스트 코드 작성했으나 mysql 접속시 권한 문제 발생
-         1.ALTER USER 'root'@'node' IDENTIFIED WITH mysql_native_password BY 'psy1234' 
+         1. ALTER USER 'root'@'node' IDENTIFIED WITH mysql_native_password BY 'psy1234' 
          2. FLUSH PRIVILEGES
-         3. 위 명령어 실행해야하지만 node부분에 ip를 적어주어야하는 문제 발생
-         4. docker-compose의 network 설정을 통해 시도해기로....
+         3. ~~위 명령어 실행해야하지만 node부분에 ip를 적어주어야하는 문제 발생~~
+         4. ~~docker-compose의 network 설정을 통해 시도해기로....~~
+         5. 특정 IP 적지 않아도 node부분에 %라고 쓰면 허용된다.
+         6. 나중에 특정 IP만 허용하려면 %대신 IP사용하면 됨
 
 4. mysql
    1. mysql contianer로 연결하여 필요한 컨테이너에서 이용하게 하려고 함
@@ -72,9 +74,19 @@
    1. 하지만 volume이 mysql의 data쪽에 잡혀있다면 최초에 실행되고 그 다음에는 실행되지 않는다.
       1. 정확히 말하면 최초 실행할때는 local의 volume이 비어있는상태에서는 실행됨
       2. local의 volume에 mysqldata가 있으면 실행되지 않는다.
-      3. 나는 애초에 node에서 접근할 수 있는 권한을 주기위해 alter user ~~ 명령어를 실행하려고 한건데... volume에 상관없이 container를 실행할때마다 실행시키는 법을 찾아봐야겠다.
-
-
+      3. ~~나는 애초에 node에서 접근할 수 있는 권한을 주기위해 alter user ~~ 명령어를 실행하려고 한건데... volume에 상관없이 container를 실행할때마다 실행시키는 법을 찾아봐야겠다.~~
+      4. mysql-volume에 처음 올라올때 설정 적용하면 volume이 지워지지 않는 이상 계속 유지되기 때문에 그럴 필요 없었다...
+4. docker-compose.yml을 정리하려고 build 밑을 (context: ., dockerfile: ./node/Dockerfile) ->  (context: ./node, dockerfile: Dockerfile)로 바꾸었다가 빌드할 때 Dockerfile에서 failed to compute cache key: "/node" not found: not found과 같은 에러가 발생해서 오래 고생함
+   1. Dockerfile에 COPY ../node ./node 이 부분이 문제였다.
+   2. COPY ../node ./node를 COPY ./ ./node로 설정해주면 빌드가 잘된다.
+   3. 의문점이 들어 이유를 찾아봤지만 찾지 못했다...
+      1. yml -> (context: ., dockerfile: ./node/Dockerfile) 일때 
+         1. COPY ../node ./node 동작
+         2. COPY ./ ./node 이건 에러
+      2. yml -> (context: ./node, dockerfile: Dockerfile) 일때 
+         1. COPY ./ ./node 이건 동작 
+         2. COPY ../node ./node 이건 에러
+      3. 애초에 DockerCompose/node안에 있으면 ./ 나 ../node나 똑같은데???
 추가)
 특정 이미지를 만들어서 배포하고 싶으면 docker-registry를 사용하면 된다.
 1. DockerHub에 올릴때
