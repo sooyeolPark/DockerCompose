@@ -86,7 +86,12 @@
       2. yml -> (context: ./node, dockerfile: Dockerfile) 일때 
          1. COPY ./ ./node 이건 동작 
          2. COPY ../node ./node 이건 에러
-      3. 애초에 DockerCompose/node안에 있으면 ./ 나 ../node나 똑같은데???
+   
+      3. 1번 항목은 dockerfile이 실행되는 곳이 DockerCompose/node안이 아니고 DockerCompose/???이라는거고
+      4. 2번 항목은 dockerfile이 실행되는 곳이 DockerCompose/node안이다 
+         1. 근데 애초에 DockerCompose/node안에 있으면 ./ 나 ../node나 똑같은데???
+      5. Dockerfile의 동작 원리를 찾아보자 (Layer기반과 관련이 있을듯...)
+ 
 추가)
 특정 이미지를 만들어서 배포하고 싶으면 docker-registry를 사용하면 된다.
 1. DockerHub에 올릴때
