@@ -86,12 +86,21 @@
       2. yml -> (context: ./node, dockerfile: Dockerfile) 일때 
          1. COPY ./ ./node 이건 동작 
          2. COPY ../node ./node 이건 에러
-   
+
       3. 1번 항목은 dockerfile이 실행되는 곳이 DockerCompose/node안이 아니고 DockerCompose/???이라는거고
       4. 2번 항목은 dockerfile이 실행되는 곳이 DockerCompose/node안이다 
          1. 근데 애초에 DockerCompose/node안에 있으면 ./ 나 ../node나 똑같은데???
-      5. Dockerfile의 동작 원리를 찾아보자 (Layer기반과 관련이 있을듯...)
- 
+      5. Dockerfile의 동작 원리를 찾아보자 ~~(Layer기반과 관련이 있을듯...)~~
+         1. Stackoverflow에 물어봄 
+         2. https://stackoverflow.com/questions/71956228/why-docker-compose-and-dockerfile-working-this-way
+         3. 답변과 몇번의 테스트를 통하여 이유를 찾음
+            1. 보안상의 이유로 빌드 컨텍스트 디렉토리 또는 그 아래에 있는 호스트의 파일에만 액세스할 수 있다.
+            2. context에 적힌 경로가 Root 디렉토리처럼 취급됨
+               1. 1경우에는 context가 DockerCompose안이므로 파일을 제대로 복사해 가지 못함
+                  1. 1-1경우는 테스트를 통해 알아냈는데 DockerCompose가 Root 디렉토리처럼 취급됨으로 ../node 라고 해도 ./node와 똑같은 취급이 되는 것 (실제로 둘다 정상동작한다.)
+               2. 2경우에는 context가 이미 DockerCompose/node안이므로 ./는 동작하지만 ../node나 ./node로 찾으면 DockerCompose/node/node가 되는 것임으로 에러나는 것!
+
+
 추가)
 특정 이미지를 만들어서 배포하고 싶으면 docker-registry를 사용하면 된다.
 1. DockerHub에 올릴때
