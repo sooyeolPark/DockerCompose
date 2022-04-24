@@ -1,5 +1,7 @@
 const express = require("./node_modules/express");
 const mysql = require('mysql');
+const app = express();
+const port = 3000;
 let connection = mysql.createConnection({
     host: 'mysql',
     port: '3306',
@@ -8,10 +10,7 @@ let connection = mysql.createConnection({
     database: 'init_test'
 });
 
-const app = express();
-const port = 3000;
-
-function sqlExec(sql, connection) {
+function sqlExec(sql) {
 
     connection.connect();
     let data;
@@ -19,7 +18,6 @@ function sqlExec(sql, connection) {
         if (error) throw error;
         data = result;
     });
-    connection.query()
     connection.end();
     return data
 }
@@ -27,6 +25,7 @@ function sqlExec(sql, connection) {
 let insertSql = "INSERT INTO init_test.Users (`id`, `password`, `name`) VALUES ('test1', '1q2w3e', '테스트')";
 
 let result = sqlExec(insertSql);
+
 app.get("/node", (req, res) => res.send(result));
 
 
